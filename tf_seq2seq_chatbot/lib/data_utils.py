@@ -67,6 +67,7 @@ def create_vocabulary(vocabulary_path, data_path, max_vocabulary_size,
     vocab = {}
     with gfile.GFile(data_path, mode="r") as f:
       counter = 0
+      print("opening GFile: ", data_path)
       for line in f:
         counter += 1
         if counter % 100000 == 0:
