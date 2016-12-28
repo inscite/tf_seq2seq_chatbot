@@ -6,35 +6,34 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.python.platform import gfile
 
-from tf_seq2seq_chatbot.configs.config import FLAGS, BUCKETS
-from tf_seq2seq_chatbot.lib import data_utils
-from tf_seq2seq_chatbot.lib import seq2seq_model
+from tf_seq2seq_chatbot.configs.config_ko import FLAGS, BUCKETS
+from tf_seq2seq_chatbot.lib.ko import data_utils
+from tf_seq2seq_chatbot.lib.ko import seq2seq_model
 
 
 def create_model(session, forward_only):
-  """Create translation model and initialize or load parameters in session."""
-  model = seq2seq_model.Seq2SeqModel(
-      source_vocab_size=FLAGS.vocab_size,
-      target_vocab_size=FLAGS.vocab_size,
-      buckets=BUCKETS,
-      size=FLAGS.size,
-      num_layers=FLAGS.num_layers,
-      max_gradient_norm=FLAGS.max_gradient_norm,
-      batch_size=FLAGS.batch_size,
-      learning_rate=FLAGS.learning_rate,
-      learning_rate_decay_factor=FLAGS.learning_rate_decay_factor,
-      use_lstm=False,
-      forward_only=forward_only)
+    """Create translation model and initialize or load parameters in session."""
+    model = seq2seq_model.Seq2SeqModel(
+        source_vocab_size=FLAGS.vocab_size,
+        target_vocab_size=FLAGS.vocab_size,
+        buckets=BUCKETS,
+        size=FLAGS.size,
+        num_layers=FLAGS.num_layers,
+        max_gradient_norm=FLAGS.max_gradient_norm,
+        batch_size=FLAGS.batch_size,
+        learning_rate=FLAGS.learning_rate,
+        learning_rate_decay_factor=FLAGS.learning_rate_decay_factor,
+        use_lstm=False,
+        forward_only=forward_only)
 
-  ckpt = tf.train.get_checkpoint_state(FLAGS.model_dir)
-  if ckpt and gfile.Exists(ckpt.model_checkpoint_path):
-    print("Reading model parameters from %s" % ckpt.model_checkpoint_path)
-    model.saver.restore(session, ckpt.model_checkpoint_path)
-  else:
-    print("Created model with fresh parameters.")
-    session.run(tf.initialize_all_variables())
-  return model
-
+    ckpt = tf.train.get_checkpoint_state(FLAGS.model_dir)
+    if ckpt and gfile.Exists(ckpt.model_checkpoint_path):
+        print("Reading model parameters from %s" % ckpt.model_checkpoint_path)
+        model.saver.restore(session, ckpt.model_checkpoint_path)
+    else:
+        print("Created model with fresh parameters.")
+        session.run(tf.initialize_all_variables())
+    return model
 
 def get_predicted_sentence(input_sentence, vocab, rev_vocab, model, sess):
     input_token_ids = data_utils.sentence_to_token_ids(input_sentence, vocab)

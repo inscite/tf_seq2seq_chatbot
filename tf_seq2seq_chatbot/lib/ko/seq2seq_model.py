@@ -22,11 +22,10 @@ from __future__ import print_function
 import random
 
 import numpy as np
-from six.moves import xrange  # pylint: disable=redefined-builtin
 import tensorflow as tf
 
 from tensorflow.models.rnn.translate import data_utils
-
+from tf_seq2seq_chatbot.configs.config_ko import xrange
 
 class Seq2SeqModel(object):
   """Sequence-to-sequence model with attention and for multiple buckets.
