@@ -6,10 +6,9 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.python.platform import gfile
 
-from tf_seq2seq_chatbot.configs.config_ko import FLAGS, BUCKETS
+from tf_seq2seq_chatbot.configs.config_ko import FLAGS, BUCKETS, xrange
 from tf_seq2seq_chatbot.lib.ko import data_utils
 from tf_seq2seq_chatbot.lib.ko import seq2seq_model
-
 
 def create_model(session, forward_only):
     """Create translation model and initialize or load parameters in session."""
