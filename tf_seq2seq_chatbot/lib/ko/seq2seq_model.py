@@ -164,7 +164,11 @@ class Seq2SeqModel(object):
         self.updates.append(opt.apply_gradients(
             zip(clipped_gradients, params), global_step=self.global_step))
 
-    self.saver = tf.train.Saver(tf.all_variables())
+    """
+    all_variables (from tensorflow.python.ops.variables) is deprecated and will be removed after 2016-03-02.
+    Instructions for updating: Please use tf.global_variables instead.
+    """
+    self.saver = tf.train.Saver(tf.global_variables())
 
   def step(self, session, encoder_inputs, decoder_inputs, target_weights,
            bucket_id, forward_only):

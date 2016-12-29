@@ -2,9 +2,9 @@
 Sequence-to-Sequence WireFrame for TensorFlow
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+# from __future__ import absolute_import
+# from __future__ import division
+# from __future__ import print_function
 
 from tensorflow.python import shape
 from tensorflow.python.framework import dtypes

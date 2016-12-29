@@ -1,20 +1,19 @@
-import sys
-import os
 import math
+import os
+import sys
 import time
 
 import numpy as np
-
 from six.moves import xrange  # pylint: disable=redefined-builtin
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import tensorflow as tf
 
-from tf_seq2seq_chatbot.lib.seq2seq_model_utils import create_model
+from tf_seq2seq_chatbot.lib.en.seq2seq_model_utils import create_model
 from tf_seq2seq_chatbot.configs.config import FLAGS, BUCKETS
-from tf_seq2seq_chatbot.lib.data_utils import read_data
-from tf_seq2seq_chatbot.lib import data_utils
+from tf_seq2seq_chatbot.lib.en.data_utils import read_data
+from tf_seq2seq_chatbot.lib.en import data_utils
 
 
 def train():

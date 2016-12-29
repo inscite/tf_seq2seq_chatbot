@@ -1,13 +1,14 @@
 import sys
 import tensorflow as tf
 
-TEST_DATASET_PATH = 'tf_seq2seq_chatbot/data/test/test_set.txt'
+TEST_DATASET_PATH = 'tf_seq2seq_chatbot/data/ko/test/test_set.txt'
 # SAVE_DATA_DIR = '/var/lib/tf_seq2seq_chatbot/'
-SAVE_DATA_DIR = 'tf_seq2seq_chatbot-ko_sol/'
+SAVE_DATA_DIR = 'tf_seq2seq_chatbot_ko_sol/'
 
 tf.app.flags.DEFINE_string('data_dir', SAVE_DATA_DIR + 'data', 'Data directory')
 tf.app.flags.DEFINE_string('model_dir', SAVE_DATA_DIR + 'nn_models', 'Train directory')
 tf.app.flags.DEFINE_string('results_dir', SAVE_DATA_DIR + 'results', 'Train directory')
+tf.app.flags.DEFINE_string('model_name', 'model.ckpt', 'Model file name (basename)')
 
 tf.app.flags.DEFINE_float('learning_rate', 0.5, 'Learning rate.')
 tf.app.flags.DEFINE_float('learning_rate_decay_factor', 0.99, 'Learning rate decays by this much.')

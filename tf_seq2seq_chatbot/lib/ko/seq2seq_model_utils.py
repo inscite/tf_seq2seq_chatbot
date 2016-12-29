@@ -2,15 +2,18 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import os
 import numpy as np
 import tensorflow as tf
-from tensorflow.python.platform import gfile
 
 from tf_seq2seq_chatbot.configs.config_ko import FLAGS, BUCKETS, xrange
 from tf_seq2seq_chatbot.lib.ko import data_utils
 from tf_seq2seq_chatbot.lib.ko import seq2seq_model
 
+
 def create_model(session, forward_only):
+    # pprint(sys.path)
+
     """Create translation model and initialize or load parameters in session."""
     model = seq2seq_model.Seq2SeqModel(
         source_vocab_size=FLAGS.vocab_size,
@@ -25,13 +28,25 @@ def create_model(session, forward_only):
         use_lstm=False,
         forward_only=forward_only)
 
-    ckpt = tf.train.get_checkpoint_state(FLAGS.model_dir)
-    if ckpt and gfile.Exists(ckpt.model_checkpoint_path):
-        print("Reading model parameters from %s" % ckpt.model_checkpoint_path)
-        model.saver.restore(session, ckpt.model_checkpoint_path)
+    ckpt = tf.train.get_checkpoint_state(os.path.abspath(FLAGS.model_dir))
+
+    if ckpt:
+        ckptpath = ckpt.model_checkpoint_path
+        findstep = [f for f in os.listdir(os.path.dirname(ckptpath)) if f.startswith(os.path.basename(ckptpath))]
+    if ckpt and len(findstep) > 0:
+        model_path = os.path.dirname(ckptpath)
+        print("Reading model parameters from %s" % model_path)
+        new_meta_path = ckptpath+".meta"
+        new_saver = tf.train.import_meta_graph(meta_graph_or_file=new_meta_path)
+        new_saver.restore(sess=session, save_path=tf.train.latest_checkpoint(model_path))
     else:
+        """
+        initialize_all_variables (from tensorflow.python.ops.variables) is deprecated and will be removed after 2017-03-02.
+        Instructions for updating:
+        Use `tf.global_variables_initializer` instead.
+        """
         print("Created model with fresh parameters.")
-        session.run(tf.initialize_all_variables())
+        session.run(tf.global_variables_initializer())
     return model
 
 def get_predicted_sentence(input_sentence, vocab, rev_vocab, model, sess):

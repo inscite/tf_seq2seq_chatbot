@@ -2,12 +2,10 @@ import sys
 import os
 import math
 import time
-
 import numpy as np
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 import tensorflow as tf
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from tf_seq2seq_chatbot.configs.config_ko import FLAGS, BUCKETS, xrange
 from tf_seq2seq_chatbot.lib.ko.seq2seq_model_utils import create_model
@@ -16,7 +14,7 @@ from tf_seq2seq_chatbot.lib.ko import data_utils
 
 def train():
 
-    print("Preparing dialog data in %s" % FLAGS.data_dir)
+    # print("Preparing dialog data in %s" % FLAGS.data_dir)
     train_data, dev_data, _ = data_utils.prepare_dialog_data(FLAGS.data_dir, FLAGS.vocab_size)
 
     with tf.Session() as sess:
@@ -76,7 +74,7 @@ def train():
                 previous_losses.append(loss)
 
                 # Save checkpoint and zero timer and loss.
-                checkpoint_path = os.path.join(FLAGS.model_dir, "model.ckpt")
+                checkpoint_path = os.path.join(os.path.abspath(FLAGS.model_dir), "model.ckpt")
                 model.saver.save(sess, checkpoint_path, global_step=model.global_step)
                 step_time, loss = 0.0, 0.0
 
