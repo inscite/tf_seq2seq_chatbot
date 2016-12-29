@@ -2,3 +2,4 @@
 .idea/*
 venv/*
 .DS_Store
+tf_seq2seq_chatbot*sol/*

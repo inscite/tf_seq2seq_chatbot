@@ -26,6 +26,8 @@ import tensorflow as tf
 
 from tensorflow.models.rnn.translate import data_utils
 from tf_seq2seq_chatbot.configs.config_ko import xrange
+# from tensorflow.python.ops.seq2seq import embedding_attention_seq2seq
+from tf_seq2seq_chatbot.lib.ko.seq2seq_wireframe import embedding_attention_seq2seq
 
 class Seq2SeqModel(object):
   """Sequence-to-sequence model with attention and for multiple buckets.
@@ -103,7 +105,7 @@ class Seq2SeqModel(object):
 
     # The seq2seq function: we use embedding for the input and attention.
     def seq2seq_f(encoder_inputs, decoder_inputs, do_decode):
-      return tf.nn.seq2seq.embedding_attention_seq2seq(
+      return embedding_attention_seq2seq(
           encoder_inputs, decoder_inputs, cell,
           num_encoder_symbols=source_vocab_size,
           num_decoder_symbols=target_vocab_size,
