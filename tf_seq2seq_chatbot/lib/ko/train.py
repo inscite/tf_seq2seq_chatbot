@@ -36,6 +36,10 @@ def train():
         train_buckets_scale = [sum(train_bucket_sizes[:i + 1]) / train_total_size
                                for i in xrange(len(train_bucket_sizes))]
 
+        print("[D]", "train_bucket_size:", train_bucket_sizes)
+        print("[D]", "train_total_size:", train_total_size)
+        print("[D]", "train_buckets_scale:", train_buckets_scale)
+
         # This is the training loop.
         step_time, loss = 0.0, 0.0
         current_step = 0
@@ -50,8 +54,7 @@ def train():
 
             # Get a batch and make a step.
             start_time = time.time()
-            encoder_inputs, decoder_inputs, target_weights = model.get_batch(
-                train_set, bucket_id)
+            encoder_inputs, decoder_inputs, target_weights = model.get_batch(train_set, bucket_id)
 
             _, step_loss, _ = model.step(sess, encoder_inputs, decoder_inputs,
                                        target_weights, bucket_id, forward_only=False)
@@ -74,7 +77,7 @@ def train():
                 previous_losses.append(loss)
 
                 # Save checkpoint and zero timer and loss.
-                checkpoint_path = os.path.join(os.path.abspath(FLAGS.model_dir), "model.ckpt")
+                checkpoint_path = os.path.join(os.path.abspath(FLAGS.model_dir), FLAGS.model_name)
                 model.saver.save(sess, checkpoint_path, global_step=model.global_step)
                 step_time, loss = 0.0, 0.0
 
