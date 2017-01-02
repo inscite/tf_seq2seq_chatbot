@@ -9,6 +9,7 @@ tf.app.flags.DEFINE_string('data_dir', SAVE_DATA_DIR + 'data', 'Data directory')
 tf.app.flags.DEFINE_string('model_dir', SAVE_DATA_DIR + 'nn_models', 'Train directory')
 tf.app.flags.DEFINE_string('results_dir', SAVE_DATA_DIR + 'results', 'Train directory')
 tf.app.flags.DEFINE_string('model_name', 'model.ckpt', 'Model file name (basename)')
+tf.app.flags.DEFINE_bool('use_pre_model', False, 'Option whether model constructor will use pre-trained model or not')
 
 tf.app.flags.DEFINE_float('learning_rate', 0.5, 'Learning rate.')
 tf.app.flags.DEFINE_float('learning_rate_decay_factor', 0.99, 'Learning rate decays by this much.')

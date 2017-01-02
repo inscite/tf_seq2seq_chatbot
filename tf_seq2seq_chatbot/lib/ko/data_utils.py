@@ -224,10 +224,14 @@ def read_data(tokenized_dialog_path, max_size=None):
         into the n-th bucket, i.e., such that len(source) < _buckets[n][0] and
         len(target) < _buckets[n][1]; source and target are lists of token-ids.
     """
+    print("[D]", "Entering method data_utils.read_data()")
     data_set = [[] for _ in BUCKETS]
 
     with gfile.GFile(tokenized_dialog_path, mode="r") as fh:
         source, target = fh.readline(), fh.readline()
+        # print("[D]", "source:", source)
+        # print("[D]", "target:", target)
+
         counter = 0
         while source and target and (not max_size or counter < max_size):
             counter += 1

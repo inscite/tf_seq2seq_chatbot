@@ -29,11 +29,12 @@ def create_model(session, forward_only):
         forward_only=forward_only)
 
     ckpt = tf.train.get_checkpoint_state(os.path.abspath(FLAGS.model_dir))
+    print("FLAGS.use_pre_model?: %r" % FLAGS.use_pre_model)
 
     if ckpt:
         ckptpath = ckpt.model_checkpoint_path
         findstep = [f for f in os.listdir(os.path.dirname(ckptpath)) if f.startswith(os.path.basename(ckptpath))]
-    if ckpt and len(findstep) > 0:
+    if FLAGS.use_pre_model and ckpt and len(findstep) > 0:
         model_path = os.path.dirname(ckptpath)
         print("Reading model parameters from %s" % model_path)
         new_meta_path = ckptpath+".meta"

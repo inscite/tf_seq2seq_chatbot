@@ -27,6 +27,7 @@ def train():
         print ("Reading development and training data (limit: %d)." % FLAGS.max_train_data_size)
         dev_set = read_data(dev_data)
         train_set = read_data(train_data, FLAGS.max_train_data_size)
+        # print("[D]", "train-set size:", train_set)
         train_bucket_sizes = [len(train_set[b]) for b in xrange(len(BUCKETS))]
         train_total_size = float(sum(train_bucket_sizes))
 
@@ -51,14 +52,19 @@ def train():
             random_number_01 = np.random.random_sample()
             bucket_id = min([i for i in xrange(len(train_buckets_scale))
                              if train_buckets_scale[i] > random_number_01])
+            print("[D]", "Random Number:", random_number_01)
+            print("[D]", "bucket_id:", bucket_id)
 
             # Get a batch and make a step.
             start_time = time.time()
             encoder_inputs, decoder_inputs, target_weights = model.get_batch(train_set, bucket_id)
+            print("[D]", "shape of encoder_inputs:", np.array(encoder_inputs).shape)
+            print("[D]", "shape of decoder_inputs:", np.array(decoder_inputs).shape)
 
             _, step_loss, _ = model.step(sess, encoder_inputs, decoder_inputs,
                                        target_weights, bucket_id, forward_only=False)
 
+            print("[D]","Loss of Current TimeStep: %f" % step_loss)
             step_time += (time.time() - start_time) / FLAGS.steps_per_checkpoint
             loss += step_loss / FLAGS.steps_per_checkpoint
             current_step += 1
@@ -66,8 +72,9 @@ def train():
             # Once in a while, we save checkpoint, print statistics, and run evals.
             if current_step % FLAGS.steps_per_checkpoint == 0:
                 # Print statistics for the previous epoch.
+                print("[D]","Plain Loss:",loss)
                 perplexity = math.exp(loss) if loss < 300 else float('inf')
-                print ("global step %d learning rate %.4f step-time %.2f perplexity %.2f" %
+                print ("[D]", "global step %d learning rate %.4f step-time %.2f perplexity %.2f" %
                        (model.global_step.eval(), model.learning_rate.eval(), step_time, perplexity))
 
                 # Decrease learning rate if no improvement was seen over last 3 times.
